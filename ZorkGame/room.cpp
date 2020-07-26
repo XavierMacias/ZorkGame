@@ -20,20 +20,27 @@ void Room::Look() const
 	cout << "\n" << name << "\n";
 	cout << description;
 
-	// List exits --
-	/*for (list<Entity*>::const_iterator it = container.begin(); it != container.cend(); ++it)
+	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
-		if ((*it)->type == EXIT)
+		//if ((*it)->type == EXIT && (*it)->room->name == name)
+		if ((*it)->type == EXIT) 
 		{
 			Exit* ex = (Exit*)*it;
-			cout << "\nDirection (" << ex->GetNameFrom(this) << ") you see " << ex->GetDestinationFrom(this)->name;
+			if (ex->destination->name == name) {
+				ex->Look(1);
+			}
+			else if (ex->origin->name == name) {
+				ex->Look(0);
+			}
+			
+			//cout << "\nDirection (" << ex->GetNameFrom(this) << ") you see " << ex->GetDestinationFrom(this)->name;
 		}
 	}
 
 	// List items --
-	for (list<Entity*>::const_iterator it = container.begin(); it != container.cend(); ++it)
+	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
-		if ((*it)->type == ITEM)
+		if ((*it)->type == ITEM && (*it)->room->name == name)
 		{
 			Item* item = (Item*)*it;
 			cout << "\nThere is an item here: " << item->name;
@@ -41,18 +48,18 @@ void Room::Look() const
 	}
 
 	// List creatures --
-	for (list<Entity*>::const_iterator it = container.begin(); it != container.cend(); ++it)
+	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
-		if ((*it)->type == CREATURE)
+		if ((*it)->type == CREATURE && (*it)->room->name == name)
 		{
 			Creature* cr = (Creature*)*it;
 			cout << "\nThere is someone else here: " << cr->name;
-			if (cr->IsAlive() == false)
-				cout << " (dead)";
+			//if (cr->IsAlive() == false)
+			//	cout << " (dead)";
 		}
 	}
 
-	cout << "\n";*/
+	cout << "\n";
 }
 
 // ----------------------------------------------------

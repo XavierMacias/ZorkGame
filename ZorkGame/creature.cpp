@@ -8,6 +8,7 @@ Creature::Creature(const char* name, const char* description, Room* room) :
 	attack = defense = 1;
 	weapon = NULL;
 	armour = NULL;
+	room->elements.push_back(this);
 	//if (one_way == false)
 	//	destination->container.push_back(this);
 }

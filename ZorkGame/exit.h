@@ -1,4 +1,6 @@
 #pragma once
+#ifndef __Exit__
+#define __Exit__
 #include <string>
 #include "entity.h"
 #include "room.h"
@@ -11,20 +13,22 @@ class Room;
 class Exit : public Entity
 {
 	public:
-		Exit(const char* name, const char* opposite_name, const char* description, Room* origin, Room* destination, bool one_way = false);
+		Exit(const char* direction, const char* lead, const char* description, Room* origin, Room* destination);
 		~Exit();
 
-		void Look() const;
+		void Look(int isOrigin) const;
 
 		//const string& GetNameFrom(const Room* room) const;
 		//Room* GetDestinationFrom(const Room* room) const;
 
 	public:
-		bool one_way;
+		const char* direction;
 		bool closed;
 		bool locked;
-		string opposite_name;
+		const char* lead;
 		Room* destination;
-		//Entity* key;
+		Room* origin;
+		Entity* key;
 };
+#endif
 

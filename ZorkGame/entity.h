@@ -1,4 +1,7 @@
+#ifndef __Entity__
+#define __Entity__
 #pragma once
+
 #include <string>
 #include <list>
 #include <iostream>
@@ -31,4 +34,6 @@ public:
 
 	Entity* room;
 };
+
+#endif 
 

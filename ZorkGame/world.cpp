@@ -17,9 +17,9 @@ World::World()
 	Room* house = new Room("House", "You are inside a beautiful but small white house.\n");
 	Room* basement = new Room("Basement", "The basement features old furniture and dim light.\n");
 
-	//Exit* ex1 = new Exit("west", "east", "Little path", house, forest);
-	//Exit* ex2 = new Exit("down", "up", "Stairs", house, basement);
-	//ex2->locked = true;
+	Exit* ex1 = new Exit("west", "east", "little path", house, forest);
+	Exit* ex2 = new Exit("south", "north", "stairs", house, basement);
+	ex2->locked = true;
 
 	entities.push_back(forest);
 	entities.push_back(house);
@@ -55,6 +55,10 @@ World::~World()
 		delete* it;
 
 	entities.clear();
+}
+// ----------------------------------------------------
+list<Entity*> World::GetEntitites() {
+	return entities;
 }
 // ----------------------------------------------------
 void World::LookInitialMap() {

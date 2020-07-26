@@ -1,7 +1,15 @@
+#ifndef __Player__
+#define __Player__
 #pragma once
+
 #include "creature.h"
 
 using namespace std;
+
+class Entity;
+class Creature;
+class Item;
+class Room;
 
 class Player : public Creature
 {
@@ -17,4 +25,6 @@ class Player : public Creature
 	public:
 		list<Entity*> items;
 };
+
+#endif //__Player__
 

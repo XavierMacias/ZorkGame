@@ -1,7 +1,11 @@
 #pragma once
+#ifndef __Room__
+#define __Room__
 #include <string>
 #include <list>
 #include "entity.h"
+#include "creature.h"
+#include "item.h"
 
 class Entity;
 
@@ -20,4 +24,5 @@ class Room : public Entity
 	public:
 		list<Entity*> elements;
 };
+#endif
 

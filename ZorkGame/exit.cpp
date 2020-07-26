@@ -2,12 +2,13 @@
 #include "exit.h"
 
 // ----------------------------------------------------
-Exit::Exit(const char* name, const char* opposite_name, const char* description, Room* origin, Room* destination, bool one_way) :
-	Entity(name, description, (Entity*)origin),
-	closed(false), locked(false), one_way(one_way), destination(destination), opposite_name(opposite_name) //key(NULL)
+Exit::Exit(const char* direction, const char* lead, const char* description, Room* origin, Room* destination) :
+	Entity(direction, description, (Entity*)origin),
+	closed(false), locked(false), destination(destination), lead(lead), key(NULL), direction(direction), origin(origin)
 {
 	type = EXIT;
-
+	origin->elements.push_back(this);
+	destination->elements.push_back(this);
 	//if (one_way == false)
 	//	destination->container.push_back(this);
 }
@@ -17,12 +18,18 @@ Exit::~Exit()
 {
 }
 
-
 // ----------------------------------------------------
-void Exit::Look() const
+void Exit::Look(int isOrigin) const
 {
-	cout << name << " to " << opposite_name << "\n";
-	cout << description << "\n";
+	//cout << name << " to " << opposite_name << "\n";
+	//cout << description << "\n";
+	if (isOrigin == 0) {
+		cout << "In direction " << direction << " there is a " << description << " that leads to a " << destination->name << ".\n";
+	}
+	else {
+		cout << "In direction " << lead << " there is a " << description << " that leads to a " << origin->name << ".\n";
+	}
+	
 }
 
 // ----------------------------------------------------

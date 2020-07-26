@@ -6,6 +6,7 @@ Item::Item(const char* name, const char* description, Room* room, ItemType itemT
 {
 	type = ITEM;
 	item_type = itemType;
+	room->elements.push_back(this);
 
 	//if (one_way == false)
 	//	destination->container.push_back(this);

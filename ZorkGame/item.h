@@ -1,9 +1,13 @@
 #pragma once
+#ifndef __Item__
+#define __Item__
 #include <string>
 #include "entity.h"
 #include "room.h"
 
 using namespace std;
+
+class Room;
 
 enum ItemType
 {
@@ -23,4 +27,5 @@ public:
 public:
 	ItemType item_type;
 };
+#endif
 
