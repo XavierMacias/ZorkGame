@@ -1,8 +1,8 @@
 #include "entity.h"
 
 // ----------------------------------------------------
-Entity::Entity(const char* name, const char* description) :
-	name(name), description(description)
+Entity::Entity(const char* name, const char* description, Entity* room) :
+	name(name), description(description), room(room)
 {
 	type = ENTITY;
 

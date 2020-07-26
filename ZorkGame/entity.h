@@ -19,7 +19,7 @@ enum EntityType
 class Entity
 {
 public:
-	Entity(const char* name, const char* description);
+	Entity(const char* name, const char* description, Entity* room);
 	virtual ~Entity();
 
 	virtual void Look() const;
@@ -29,6 +29,6 @@ public:
 	string name;
 	string description;
 
-	list<Entity*> container;
+	Entity* room;
 };
 
