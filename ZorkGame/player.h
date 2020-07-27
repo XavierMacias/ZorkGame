@@ -22,6 +22,8 @@ class Player : public Creature
 		void Inventory() const;
 		Item* HaveItem(string item);
 		Room* Go(string direction);
+		void Take(string item);
+		void Drop(string item);
 		void Equip(string item);
 		void Unequip(string item);
 	public:

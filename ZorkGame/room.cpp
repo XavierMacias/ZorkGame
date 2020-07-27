@@ -41,7 +41,7 @@ void Room::Look() const
 	// List items --
 	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
-		if ((*it)->type == ITEM && (*it)->room->name == name)
+		if ((*it)->type == ITEM)// && (*it)->room->name == name)
 		{
 			Item* item = (Item*)*it;
 			cout << "\nThere is an item here: " << item->name;

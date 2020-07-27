@@ -41,14 +41,14 @@ void Player::Inventory() const {
 		cout << "You don't have any equiped weapon.\n";
 	}
 	else {
-		cout << "Weapon: " << weapon << "\n";
+		cout << "Weapon: " << weapon->name << "\n";
 	}
 	
 	if (armour == NULL) {
 		cout << "You don't have any equiped armour.\n";
 	}
 	else {
-		cout << "Armour: " << armour << "\n";
+		cout << "Armour: " << armour->name << "\n";
 	}
 
 	cout << "STATS: \n";
@@ -85,15 +85,47 @@ Room* Player::Go(string direction) {
 	return NULL;
 }
 // ----------------------------------------------------
+void Player::Take(string name) {
+	list<Entity*> roomElements = actualRoom->elements;
+	bool find = false;
+	for (list<Entity*>::const_iterator it = roomElements.begin(); it != roomElements.cend(); ++it)
+	{
+		if ((*it)->name == name) {
+			find = true;
+			items.push_back((*it));
+			cout << "You take the " << name << ".\n";
+			actualRoom->elements.remove(*it);
+			break;
+		}
+	}
+	if (!find) {
+		cout << "This object isn't in this room.\n";
+	}
+}
+// ----------------------------------------------------
+void Player::Drop(string name) {
+	if (HaveItem(name) != NULL) {
+		Item* item = HaveItem(name);
+		items.remove(item);
+		actualRoom->elements.push_back(item);
+		cout << "You drop the " << name << " in this room.\n";
+	}
+	else {
+		cout << "You don't have this item in the inventory (Remember to unequip the weapons before drop them!).\n";
+	}
+}
+// ----------------------------------------------------
 void Player::Equip(string name) {
 	if (HaveItem(name) != NULL) {
 		Item* item = HaveItem(name);
-		if (item->type == ARMOUR) {
+		if (item->item_type == ARMOUR) {
+			items.remove(item);
 			armour = item;
 			defense += item->defense_power;
 			cout << "You equiped a shield.\n";
 		}
-		else if(item->type == WEAPON) {
+		else if(item->item_type == WEAPON) {
+			items.remove(item);
 			weapon = item;
 			attack += item->attack_power;
 			cout << "You equiped a sword.\n";
@@ -109,25 +141,22 @@ void Player::Equip(string name) {
 }
 
 void Player::Unequip(string name) {
-	if (HaveItem(name) != NULL) {
-		Item* item = HaveItem(name);
-		if (weapon->name == item->name) {
-			weapon = NULL;
-			attack -= item->attack_power;
-			cout << "You unequiped the sword.\n";
-		}
-		else if (armour->name == item->name) {
-			armour = NULL;
-			defense -= item->defense_power;
-			cout << "You unequiped the shield.\n";
-		}
-		else {
-			cout << "You can't unequip this";
-		}
+	if (weapon->name == name) {
+		Item* item = weapon;
+		weapon = NULL;
+		attack -= item->attack_power;
+		items.push_back(item);
+		cout << "You unequiped the sword.\n";
+	}
+	else if (armour->name == name) {
+		Item* item = armour;
+		armour = NULL;
+		defense -= item->defense_power;
+		items.push_back(item);
+		cout << "You unequiped the shield.\n";
 	}
 	else {
-		cout << "You don't have that object.\n";
+		cout << "You can't unequip this";
 	}
-	
 
 }

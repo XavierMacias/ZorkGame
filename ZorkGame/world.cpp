@@ -38,7 +38,7 @@ World::World()
 	Item* key = new Item("Key", "Old iron key.\n", basement, COMMON);
 	//ex2->key = key;
 
-	Item* sword = new Item("Sword", "A simple old and rusty sword.\n", forest, WEAPON);
+	Item* sword = new Item("sword", "A simple old and rusty sword.\n", forest, WEAPON);
 	sword->attack_power = 5;
 
 	entities.push_back(mailbox);
@@ -94,11 +94,11 @@ bool World::CheckInstruction(vector<string> instr) {
 			return true;
 		}
 		else if (action == "take") {
-			// player -> take parameter
+			player->Take(parameter);
 			return true;
 		}
 		else if (action == "drop") {
-			// player -> drop parameter
+			player->Drop(parameter);
 			return true;
 		}
 		else if (action == "attack") {
