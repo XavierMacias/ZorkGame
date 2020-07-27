@@ -58,7 +58,13 @@ void Room::Look() const
 		if ((*it)->type == CREATURE || (*it)->type == NPC) //&& (*it)->room->name == name)
 		{
 			Creature* cr = (Creature*)*it;
-			cout << "\nThere is someone else here: " << cr->name;
+			if (cr->IsDead()) {
+				cout << "\nThere is the dead body of " << cr->name;
+			}
+			else {
+				cout << "\nThere is someone else here: " << cr->name;
+			}
+			
 			//if (cr->IsAlive() == false)
 			//	cout << " (dead)";
 		}
@@ -87,14 +93,14 @@ Exit* Room::GetExit(string direction)
 	return NULL;
 }
 // ----------------------------------------------------
-Exit* Room::GetLockedExit()
+Exit* Room::GetLockedExit(string direction)
 {
 	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
 		if ((*it)->type == EXIT)
 		{
 			Exit* ex = (Exit*)*it;
-			if (ex->locked) {
+			if (ex->locked && ((ex->direction == direction && this == ex->origin) || (ex->lead == direction && this == ex->destination))) {
 				return ex;
 			}
 		}

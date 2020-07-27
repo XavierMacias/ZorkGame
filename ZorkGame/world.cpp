@@ -19,7 +19,7 @@ World::World()
 	Room* basement = new Room("Basement", "The basement features old furniture and dim light.\n");
 
 	Exit* ex1 = new Exit("west", "east", "little path", house, forest);
-	Exit* ex2 = new Exit("south", "north", "stairs", house, basement);
+	Exit* ex2 = new Exit("south", "north", "stairs", basement, house);
 	ex2->locked = true;
 
 	entities.push_back(forest);
@@ -89,7 +89,7 @@ bool World::CheckInstruction(vector<string> instr) {
 	string action = instr.at(0);
 	if (instr.size() == 1) { // commands without arguments
 		if (action == "help") {
-			cout << "The possible commands are: help, inventory, go <direction>, look <something>, take <item>, drop <item>, attack <enemy>, open <item>, equip <weapon/armor>, unequip <weapon/armor>, use <item>, exit\n";
+			cout << "The possible commands are: help, inventory, go <direction>, look <something>, take <item>, drop <item>, attack <enemy>, open <item>, equip <weapon/armor>, unequip <weapon/armor>, use <item>, use <item> <direction>, exit\n";
 			return true;
 		}
 		else if (action == "inventory") {
@@ -144,6 +144,14 @@ bool World::CheckInstruction(vector<string> instr) {
 			return true;
 		}
 
+	}
+	if (instr.size() == 3) { // commands with 2 arguments
+		string parameter = instr.at(1);
+		string parameter2 = instr.at(2);
+		if (action == "use") {
+			player->Unlock(parameter, parameter2);
+			return true;
+		}
 	}
 	return false;
 }

@@ -29,6 +29,7 @@ class Player : public Creature
 		bool Use(string item);
 		bool Talk(string creature);
 		bool Open(string item);
+		bool Unlock(string item, string direction);
 		bool Attack(string enemy);
 		void TurnAttack(Creature* attacker, Creature* defender);
 	public:

@@ -113,22 +113,25 @@ bool Player::Take(string name) {
 	list<Entity*> roomElements = actualRoom->elements;
 	for (list<Entity*>::const_iterator it = roomElements.begin(); it != roomElements.cend(); ++it)
 	{
-		Item* item = (Item*)*it;
-		if (item->name == name && item->ContainerIsOpened()) {
-			if (!item->canTake) {
-				cout << "You can't take this item with you.\n";
-				return false;
+		if ((*it)->type == ITEM) {
+			Item* item = (Item*)*it;
+			if (item->name == name && item->ContainerIsOpened()) {
+				if (!item->canTake) {
+					cout << "You can't take this item with you.\n";
+					return false;
+				}
+				items.push_back(item);
+				cout << "You take the " << name << ".\n";
+				actualRoom->elements.remove(*it);
+				if (item->container != NULL) {
+					item->container->child = NULL;
+				}
+				return true;
 			}
-			items.push_back(item);
-			cout << "You take the " << name << ".\n";
-			actualRoom->elements.remove(*it);
-			if (item->container != NULL) {
-				item->container->child = NULL;
-			}
-			return true;
 		}
+		
 	}
-	cout << "This object isn't in this room.\n";
+	cout << "You can't take this.\n";
 	return false;
 }
 // ----------------------------------------------------
@@ -209,20 +212,9 @@ bool Player::Use(string name) {
 		items.remove(item);
 		return true;
 	}
-	Exit* lockedExit = actualRoom->GetLockedExit();
-	if (lockedExit == NULL) {
-		cout << "You can't use this item here.\n";
-		return false;
-	}
-	if (item != lockedExit->key) {
-		cout << "This item doesn't work here.\n";
-		return false;
-	}
-
-	actualRoom->GetLockedExit()->locked = false;
-	items.remove(item);
-	cout << "You unlocked the door in the path with the " << item->name << ".\n";
-	return true;
+	cout << "You can't use this here.\n";
+	return false;
+	
 }
 // ----------------------------------------------------
 bool Player::Open(string name) {
@@ -239,6 +231,28 @@ bool Player::Open(string name) {
 	}
 	cout << "You can't open this object.\n";
 	return false;
+}
+// ----------------------------------------------------
+bool Player::Unlock(string name, string direction) {
+	if (HaveItem(name) == NULL) {
+		cout << "You don't have this item to use.\n";
+		return false;
+	}
+	Item* item = HaveItem(name);
+	Exit* lockedExit = actualRoom->GetLockedExit(direction);
+	if (lockedExit == NULL) {
+		cout << "You can't use this item here.\n";
+		return false;
+	}
+	if (item != lockedExit->key) {
+		cout << "This item doesn't work here.\n";
+		return false;
+	}
+
+	actualRoom->GetLockedExit(direction)->locked = false;
+	items.remove(item);
+	cout << "You unlocked the door in the " << direction << " path with the " << item->name << ".\n";
+	return true;
 }
 // ----------------------------------------------------
 bool Player::Talk(string name) {
@@ -258,6 +272,10 @@ bool Player::Attack(string name) {
 	Creature* cr = actualRoom->GetCreature(name);
 	if (cr->type == NPC) {
 		cout << "You can't attack this person.\n";
+		return false;
+	}
+	if (cr->IsDead()) {
+		cout << cr->name << " is already dead!\n";
 		return false;
 	}
 	while (!cr->IsDead() || !IsDead()) {

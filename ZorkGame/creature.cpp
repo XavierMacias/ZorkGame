@@ -28,7 +28,7 @@ bool Creature::IsDead() const {
 void Creature::Look() const {
 
 	if (IsDead()) {
-		cout << "This is the body of " << name << ".\n";
+		cout << "This is the dead body of " << name << ".\n";
 	}
 	else {
 		cout << "\n" << name << "\n";
