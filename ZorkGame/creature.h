@@ -16,17 +16,21 @@ class Item;
 class Creature : public Entity
 {
 	public:
-		Creature(const char* name, const char* description, Room* room);
+		Creature(const char* name, const char* description, Room* room, int maxHP);
 		~Creature();
 
+		bool IsDead() const;
 		virtual void Look() const;
+		void Talk() const;
 
-		//bool IsAlive() const;
 	public:
+		int hp;
+		int maxHP;
 		int attack;
 		int defense;
 		Item* weapon;
 		Item* armour;
+		string text;
 };
 
 #endif

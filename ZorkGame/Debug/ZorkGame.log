@@ -1,10 +1,2 @@
-﻿  creature.cpp
-  exit.cpp
-  item.cpp
-  main.cpp
-C:\Users\User\source\repos\ZorkGame\ZorkGame\main.cpp(10,10): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
-  player.cpp
-  room.cpp
-  world.cpp
-  Generando código...
+﻿  world.cpp
   ZorkGame.vcxproj -> C:\Users\User\source\repos\ZorkGame\Debug\ZorkGame.exe

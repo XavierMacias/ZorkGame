@@ -4,8 +4,8 @@
 using namespace std;
 
 // ----------------------------------------------------
-Player::Player(const char* name, const char* description, Room* room) : 
-	Creature(name,description, room)
+Player::Player(const char* name, const char* description, Room* room, int max) : 
+	Creature(name,description, room, max)
 {
 	type = PLAYER;
 	actualRoom = room;
@@ -25,7 +25,7 @@ void Player::Look(string name) const
 	for (list<Entity*>::const_iterator it = roomElements.begin(); it != roomElements.cend(); ++it)
 	{
 		if ((*it)->name == name) {
-			if ((*it)->type == CREATURE || (*it)->type == ITEM) {
+			if ((*it)->type == CREATURE || (*it)->type == ITEM || (*it)->type == NPC) {
 				find = true;
 				(*it)->Look();
 			}
@@ -65,6 +65,7 @@ void Player::Inventory() const {
 	}
 
 	cout << "STATS: \n";
+	cout << "Health Points: " << hp << "/" << maxHP << "\n";
 	cout << "Attack: " << attack << "\n";
 	cout << "Defense: " << defense << "\n";
 
@@ -139,13 +140,13 @@ void Player::Equip(string name) {
 			items.remove(item);
 			armour = item;
 			defense += item->defense_power;
-			cout << "You equiped a shield.\n";
+			cout << "You equiped a " << item->name << ".\n";
 		}
 		else if(item->item_type == WEAPON) {
 			items.remove(item);
 			weapon = item;
 			attack += item->attack_power;
-			cout << "You equiped a sword.\n";
+			cout << "You equiped a " << item->name << ".\n";
 		}
 		else {
 			cout << "You can't equip this item.\n";
@@ -163,14 +164,14 @@ void Player::Unequip(string name) {
 		weapon = NULL;
 		attack -= item->attack_power;
 		items.push_back(item);
-		cout << "You unequiped the sword.\n";
+		cout << "You unequiped the " << item->name << ".\n";
 	}
 	else if (armour->name == name) {
 		Item* item = armour;
 		armour = NULL;
 		defense -= item->defense_power;
 		items.push_back(item);
-		cout << "You unequiped the shield.\n";
+		cout << "You unequiped the " << item->name << ".\n";
 	}
 	else {
 		cout << "You can't unequip this.\n";
@@ -184,6 +185,19 @@ bool Player::Use(string name) {
 		return false;
 	}
 	Item* item = HaveItem(name);
+	if (item->item_type == HEALTH && item->name == name) {
+		if (hp == maxHP) {
+			cout << "Your health is maximal!\n";
+			return false;
+		}
+		hp += item->heal_power;
+		if (hp > maxHP) {
+			hp = maxHP;
+		}
+		cout << "You use the " << item->name <<  " and restored HP!\n";
+		items.remove(item);
+		return true;
+	}
 	Exit* lockedExit = actualRoom->GetLockedExit();
 	if (lockedExit == NULL) {
 		cout << "You can't use this item here.\n";
@@ -199,3 +213,56 @@ bool Player::Use(string name) {
 	cout << "You unlocked the door in the path with the " << item->name << ".\n";
 	return true;
 }
+// ----------------------------------------------------
+bool Player::Talk(string name) {
+	if (actualRoom->GetCreature(name) == NULL) {
+		cout << "You can't talk with it now.\n";
+		return false;
+	}
+	actualRoom->GetCreature(name)->Talk();
+	return true;
+}
+// ----------------------------------------------------
+bool Player::Attack(string name) {
+	if (actualRoom->GetCreature(name) == NULL) {
+		cout << "You can't attack this.\n";
+		return false;
+	}
+	Creature* cr = actualRoom->GetCreature(name);
+	if (cr->type == NPC) {
+		cout << "You can't attack this person.\n";
+		return false;
+	}
+	while (!cr->IsDead() || !IsDead()) {
+		TurnAttack(this, cr);
+		if (cr->IsDead()) {
+			break;
+		}
+		TurnAttack(cr, this);
+		if (IsDead()) {
+			break;
+		}
+	}
+	if (cr->IsDead()) {
+		cout << "You defeat " << cr->name << "!\n";
+	}
+	else {
+		cout << "You dead! GAME OVER!\n";
+		exit(0);
+	}
+	return true;
+}
+// ----------------------------------------------------
+void Player::TurnAttack(Creature* attacker, Creature* defender) {
+	int hurt = (attacker->attack * 2) / defender->defense;
+	hurt += rand() % 3;
+	defender->hp -= hurt;
+	if (attacker == this) {
+		cout << "You attack " << defender->name << " and it losts " << hurt << "HP!\n";
+	}
+	else {
+		cout << attacker->name << " attack you and you lost " << hurt << "HP!\n";
+	}
+	
+}
+

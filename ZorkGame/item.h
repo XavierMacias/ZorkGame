@@ -12,6 +12,7 @@ class Room;
 enum ItemType
 {
 	COMMON,
+	HEALTH,
 	WEAPON,
 	ARMOUR
 };
@@ -28,6 +29,7 @@ public:
 	ItemType item_type;
 	int attack_power;
 	int defense_power;
+	int heal_power;
 };
 #endif
 

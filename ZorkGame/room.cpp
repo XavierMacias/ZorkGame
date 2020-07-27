@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "exit.h"
+#include "creature.h"
 #include "room.h"
 
 // ----------------------------------------------------
@@ -51,7 +52,7 @@ void Room::Look() const
 	// List creatures --
 	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
-		if ((*it)->type == CREATURE) //&& (*it)->room->name == name)
+		if ((*it)->type == CREATURE || (*it)->type == NPC) //&& (*it)->room->name == name)
 		{
 			Creature* cr = (Creature*)*it;
 			cout << "\nThere is someone else here: " << cr->name;
@@ -93,6 +94,19 @@ Exit* Room::GetLockedExit()
 			if (ex->locked) {
 				return ex;
 			}
+		}
+	}
+
+	return NULL;
+}
+// ----------------------------------------------------
+Creature* Room::GetCreature(string name) {
+
+	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
+	{
+		if ((*it)->type == CREATURE || (*it)->type == NPC)
+		{
+			return (Creature*)(*it);
 		}
 	}
 

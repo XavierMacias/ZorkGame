@@ -4,6 +4,7 @@
 #include "room.h"
 #include "exit.h"
 #include "creature.h"
+#include "npc.h"
 #include "item.h"
 
 using namespace std;
@@ -29,24 +30,36 @@ World::World()
 	//entities.push_back(ex2);
 
 	// Creatures ----
-	Creature* butler = new Creature("butler", "It's James, the house Butler.\n", house);
+	Creature* butler = new Creature("guardian", "It's James, the house guardian.\n", house, 15);
+	butler->text = "I'm the guardian of this house, you must defeat me.\n";
 	//butler->hit_points = 10;
 	entities.push_back(butler);
 
+	// NPCs ----
+	Npc* harry = new Npc("harry", "It's your friend Harry.", forest);
+	harry->text = "Hello, to win the game you must defeat the ogre hidden somewhere in the map.\n";
+
+	entities.push_back(harry);
+
 	// Items -----
 	Item* mailbox = new Item("chest", "Looks like it might contain something.\n", basement, COMMON);
+	Item* potion = new Item("potion", "A medicine to heal wounds.\n", house, HEALTH);
+	potion->heal_power = 20;
 	Item* key = new Item("key", "Old iron key.\n", house, COMMON);
 	ex2->key = key;
 
 	Item* sword = new Item("sword", "A simple old and rusty sword.\n", forest, WEAPON);
 	sword->attack_power = 5;
 
+	Item* shield = new Item("shield", "An old and rusty shield.\n", forest, ARMOUR);
+	shield->defense_power = 3;
+
 	entities.push_back(mailbox);
 	entities.push_back(key);
 	entities.push_back(sword);
 
 	// Player ----
-	player = new Player("Hero", "You are an awesome adventurer!\n", forest);
+	player = new Player("Hero", "You are an awesome adventurer!\n", forest, 30);
 	entities.push_back(player);
 }
 
@@ -103,7 +116,7 @@ bool World::CheckInstruction(vector<string> instr) {
 			return true;
 		}
 		else if (action == "attack") {
-			// player -> attack parameter
+			player->Attack(parameter);
 			return true;
 		}
 		else if (action == "open") {
@@ -120,6 +133,10 @@ bool World::CheckInstruction(vector<string> instr) {
 		}
 		else if (action == "use") {
 			player->Use(parameter);
+			return true;
+		}
+		else if (action == "talk") {
+			player->Talk(parameter);
 			return true;
 		}
 

@@ -10,6 +10,7 @@
 
 class Entity;
 class Exit;
+class Creature;
 
 using namespace std;
 
@@ -22,6 +23,7 @@ class Room : public Entity
 		void Look() const;
 		Exit* GetExit(string direction);
 		Exit* GetLockedExit();
+		Creature* GetCreature(string name);
 
 	public:
 		list<Entity*> elements;

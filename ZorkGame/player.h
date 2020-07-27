@@ -15,7 +15,7 @@ class Room;
 class Player : public Creature
 {
 	public:
-		Player(const char* name, const char* description, Room* room);
+		Player(const char* name, const char* description, Room* room, int maxHP);
 		~Player();
 
 		void Look(string entity) const;
@@ -27,6 +27,9 @@ class Player : public Creature
 		void Equip(string item);
 		void Unequip(string item);
 		bool Use(string item);
+		bool Talk(string creature);
+		bool Attack(string enemy);
+		void TurnAttack(Creature* attacker, Creature* defender);
 	public:
 		list<Entity*> items;
 		Room* actualRoom;
