@@ -51,7 +51,7 @@ void Room::Look() const
 	// List creatures --
 	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
-		if ((*it)->type == CREATURE && (*it)->room->name == name)
+		if ((*it)->type == CREATURE) //&& (*it)->room->name == name)
 		{
 			Creature* cr = (Creature*)*it;
 			cout << "\nThere is someone else here: " << cr->name;
@@ -75,6 +75,22 @@ Exit* Room::GetExit(string direction)
 				return ex;
 			}
 			else if (ex->origin->name == name && ex->direction == direction) {
+				return ex;
+			}
+		}
+	}
+
+	return NULL;
+}
+// ----------------------------------------------------
+Exit* Room::GetLockedExit()
+{
+	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
+	{
+		if ((*it)->type == EXIT)
+		{
+			Exit* ex = (Exit*)*it;
+			if (ex->locked) {
 				return ex;
 			}
 		}

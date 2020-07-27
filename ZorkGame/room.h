@@ -21,6 +21,7 @@ class Room : public Entity
 
 		void Look() const;
 		Exit* GetExit(string direction);
+		Exit* GetLockedExit();
 
 	public:
 		list<Entity*> elements;

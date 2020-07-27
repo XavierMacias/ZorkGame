@@ -23,7 +23,6 @@ class Exit : public Entity
 
 	public:
 		const char* direction;
-		bool closed;
 		bool locked;
 		const char* lead;
 		Room* destination;

@@ -18,7 +18,7 @@ class Player : public Creature
 		Player(const char* name, const char* description, Room* room);
 		~Player();
 
-		void Look() const;
+		void Look(string entity) const;
 		void Inventory() const;
 		Item* HaveItem(string item);
 		Room* Go(string direction);
@@ -26,6 +26,7 @@ class Player : public Creature
 		void Drop(string item);
 		void Equip(string item);
 		void Unequip(string item);
+		bool Use(string item);
 	public:
 		list<Entity*> items;
 		Room* actualRoom;

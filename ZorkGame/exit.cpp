@@ -4,7 +4,7 @@
 // ----------------------------------------------------
 Exit::Exit(const char* direction, const char* lead, const char* description, Room* origin, Room* destination) :
 	Entity(direction, description, (Entity*)origin),
-	closed(false), locked(false), destination(destination), lead(lead), key(NULL), direction(direction), origin(origin)
+	locked(false), destination(destination), lead(lead), key(NULL), direction(direction), origin(origin)
 {
 	type = EXIT;
 	origin->elements.push_back(this);

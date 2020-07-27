@@ -18,10 +18,23 @@ Player::~Player()
 }
 
 // ----------------------------------------------------
-void Player::Look() const {
-	
-	cout << "\n" << name << "\n";
-	cout << description << "\n";
+void Player::Look(string name) const 
+{
+	list<Entity*> roomElements = actualRoom->elements;
+	bool find = false;
+	for (list<Entity*>::const_iterator it = roomElements.begin(); it != roomElements.cend(); ++it)
+	{
+		if ((*it)->name == name) {
+			if ((*it)->type == CREATURE || (*it)->type == ITEM) {
+				find = true;
+				(*it)->Look();
+			}
+		}
+	}
+	if (!find) {
+		cout << "You can't look that.\n";
+	}
+
 }
 // ----------------------------------------------------
 void Player::Inventory() const {
@@ -73,7 +86,11 @@ Room* Player::Go(string direction) {
 		cout << "You can't go in this direction.\n";
 	}
 	else {
-		if (ex->origin->name == actualRoom->name) {
+		if (ex->locked) {
+			cout << "This path is blocked by a big iron door.\n";
+			return NULL;
+		}
+		if (ex->origin->name == actualRoom->name) {	
 			actualRoom = ex->destination;
 		}
 		else if(ex->destination->name == actualRoom->name) {
@@ -139,7 +156,7 @@ void Player::Equip(string name) {
 	}
 	
 }
-
+// ----------------------------------------------------
 void Player::Unequip(string name) {
 	if (weapon->name == name) {
 		Item* item = weapon;
@@ -156,7 +173,29 @@ void Player::Unequip(string name) {
 		cout << "You unequiped the shield.\n";
 	}
 	else {
-		cout << "You can't unequip this";
+		cout << "You can't unequip this.\n";
 	}
 
+}
+// ----------------------------------------------------
+bool Player::Use(string name) {
+	if (HaveItem(name) == NULL) {
+		cout << "You don't have this item to use.\n";
+		return false;
+	}
+	Item* item = HaveItem(name);
+	Exit* lockedExit = actualRoom->GetLockedExit();
+	if (lockedExit == NULL) {
+		cout << "You can't use this item here.\n";
+		return false;
+	}
+	if (item != lockedExit->key) {
+		cout << "This item doesn't work here.\n";
+		return false;
+	}
+
+	actualRoom->GetLockedExit()->locked = false;
+	items.remove(item);
+	cout << "You unlocked the door in the path with the " << item->name << ".\n";
+	return true;
 }

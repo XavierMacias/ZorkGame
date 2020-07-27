@@ -29,19 +29,20 @@ World::World()
 	//entities.push_back(ex2);
 
 	// Creatures ----
-	Creature* butler = new Creature("Butler", "It's James, the house Butler.\n", house);
+	Creature* butler = new Creature("butler", "It's James, the house Butler.\n", house);
 	//butler->hit_points = 10;
 	entities.push_back(butler);
 
 	// Items -----
-	Item* mailbox = new Item("Mailbox", "Looks like it might contain something.\n", house, COMMON);
-	Item* key = new Item("Key", "Old iron key.\n", basement, COMMON);
-	//ex2->key = key;
+	Item* mailbox = new Item("chest", "Looks like it might contain something.\n", basement, COMMON);
+	Item* key = new Item("key", "Old iron key.\n", house, COMMON);
+	ex2->key = key;
 
 	Item* sword = new Item("sword", "A simple old and rusty sword.\n", forest, WEAPON);
 	sword->attack_power = 5;
 
 	entities.push_back(mailbox);
+	entities.push_back(key);
 	entities.push_back(sword);
 
 	// Player ----
@@ -90,7 +91,7 @@ bool World::CheckInstruction(vector<string> instr) {
 			return true;
 		}
 		else if (action == "look") {
-			// parameter -> look
+			player->Look(parameter);
 			return true;
 		}
 		else if (action == "take") {
@@ -118,7 +119,7 @@ bool World::CheckInstruction(vector<string> instr) {
 			return true;
 		}
 		else if (action == "use") {
-			// player -> use parameter
+			player->Use(parameter);
 			return true;
 		}
 
