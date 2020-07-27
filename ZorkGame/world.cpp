@@ -39,6 +39,7 @@ World::World()
 	//ex2->key = key;
 
 	Item* sword = new Item("Sword", "A simple old and rusty sword.\n", forest, WEAPON);
+	sword->attack_power = 5;
 
 	entities.push_back(mailbox);
 	entities.push_back(sword);
@@ -82,7 +83,10 @@ bool World::CheckInstruction(vector<string> instr) {
 		
 		string parameter = instr.at(1);
 		if (action == "go") {
-			// player -> go parameter
+			Room* newRoom = player->Go(parameter);
+			if (newRoom != NULL) {
+				newRoom->Look();
+			}
 			return true;
 		}
 		else if (action == "look") {

@@ -1,10 +1,11 @@
 #include <iostream>
+#include <string>
 #include "exit.h"
 #include "room.h"
 
 // ----------------------------------------------------
-Room::Room(const char* title, const char* description) :
-	Entity(title, description, (Entity*)this)
+Room::Room(const char* name, const char* description) :
+	Entity(name, description, (Entity*)this)
 {
 	type = ROOM;
 }
@@ -63,17 +64,21 @@ void Room::Look() const
 }
 
 // ----------------------------------------------------
-/*Exit* Room::GetExit(const string& direction) const
+Exit* Room::GetExit(string direction)
 {
-	for (list<Entity*>::const_iterator it = container.begin(); it != container.cend(); ++it)
+	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
 		if ((*it)->type == EXIT)
 		{
 			Exit* ex = (Exit*)*it;
-			//if (Same(ex->GetNameFrom(this), direction))
-			//	return ex;
+			if (ex->destination->name == name && ex->lead == direction) {
+				return ex;
+			}
+			else if (ex->origin->name == name && ex->direction == direction) {
+				return ex;
+			}
 		}
 	}
-	
+
 	return NULL;
-}*/
+}

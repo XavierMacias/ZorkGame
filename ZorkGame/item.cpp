@@ -6,8 +6,10 @@ Item::Item(const char* name, const char* description, Room* room, ItemType itemT
 {
 	type = ITEM;
 	item_type = itemType;
+	attack_power = 0;
+	defense_power = 0;
 	room->elements.push_back(this);
-
+	
 	//if (one_way == false)
 	//	destination->container.push_back(this);
 }

@@ -8,6 +8,7 @@ Player::Player(const char* name, const char* description, Room* room) :
 	Creature(name,description, room)
 {
 	type = PLAYER;
+	actualRoom = room;
 
 }
 
@@ -66,17 +67,35 @@ Item* Player::HaveItem(string item) {
 	return NULL;
 }
 // ----------------------------------------------------
+Room* Player::Go(string direction) {
+	Exit* ex = actualRoom->GetExit(direction);
+	if (ex == NULL) {
+		cout << "You can't go in this direction.\n";
+	}
+	else {
+		if (ex->origin->name == actualRoom->name) {
+			actualRoom = ex->destination;
+		}
+		else if(ex->destination->name == actualRoom->name) {
+			actualRoom = ex->origin;
+		}
+		cout << "You go in direction " << direction << ".\n";
+		return actualRoom;
+	}
+	return NULL;
+}
+// ----------------------------------------------------
 void Player::Equip(string name) {
 	if (HaveItem(name) != NULL) {
 		Item* item = HaveItem(name);
 		if (item->type == ARMOUR) {
 			armour = item;
-			defense += 5;
+			defense += item->defense_power;
 			cout << "You equiped a shield.\n";
 		}
 		else if(item->type == WEAPON) {
 			weapon = item;
-			attack += 5;
+			attack += item->attack_power;
 			cout << "You equiped a sword.\n";
 		}
 		else {
@@ -89,19 +108,26 @@ void Player::Equip(string name) {
 	
 }
 
-void Player::Unequip(string item) {
-	if (weapon->name == item) {
-		weapon = NULL;
-		attack -= 5;
-		cout << "You unequiped the sword.\n";
-	}
-	else if (armour->name == item) {
-		armour = NULL;
-		defense -= 5;
-		cout << "You unequiped the shield.\n";
+void Player::Unequip(string name) {
+	if (HaveItem(name) != NULL) {
+		Item* item = HaveItem(name);
+		if (weapon->name == item->name) {
+			weapon = NULL;
+			attack -= item->attack_power;
+			cout << "You unequiped the sword.\n";
+		}
+		else if (armour->name == item->name) {
+			armour = NULL;
+			defense -= item->defense_power;
+			cout << "You unequiped the shield.\n";
+		}
+		else {
+			cout << "You can't unequip this";
+		}
 	}
 	else {
-		cout << "You can't unequip this";
+		cout << "You don't have that object.\n";
 	}
+	
 
 }

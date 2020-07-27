@@ -26,6 +26,8 @@ public:
 
 public:
 	ItemType item_type;
+	int attack_power;
+	int defense_power;
 };
 #endif
 

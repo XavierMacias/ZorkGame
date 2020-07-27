@@ -6,8 +6,10 @@
 #include "entity.h"
 #include "creature.h"
 #include "item.h"
+#include "exit.h"
 
 class Entity;
+class Exit;
 
 using namespace std;
 
@@ -18,8 +20,7 @@ class Room : public Entity
 		~Room();
 
 		void Look() const;
-
-		//Exit* GetExit(const string& direction) const;
+		Exit* GetExit(string direction);
 
 	public:
 		list<Entity*> elements;

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "creature.h"
+#include "exit.h"
 
 using namespace std;
 
@@ -20,10 +21,12 @@ class Player : public Creature
 		void Look() const;
 		void Inventory() const;
 		Item* HaveItem(string item);
+		Room* Go(string direction);
 		void Equip(string item);
 		void Unequip(string item);
 	public:
 		list<Entity*> items;
+		Room* actualRoom;
 };
 
 #endif //__Player__
