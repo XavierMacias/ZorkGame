@@ -45,7 +45,10 @@ void Room::Look() const
 		if ((*it)->type == ITEM)// && (*it)->room->name == name)
 		{
 			Item* item = (Item*)*it;
-			cout << "\nThere is an item here: " << item->name;
+			if (item->ContainerIsOpened()) {
+				cout << "\nThere is an item here: " << item->name;
+			}
+			
 		}
 	}
 

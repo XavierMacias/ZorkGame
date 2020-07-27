@@ -42,7 +42,9 @@ World::World()
 	entities.push_back(harry);
 
 	// Items -----
-	Item* mailbox = new Item("chest", "Looks like it might contain something.\n", basement, COMMON);
+	Item* chest = new Item("chest", "A simple chest made of copper.\n", basement, COMMON);
+	chest->opened = false;
+	chest->canTake = false;
 	Item* potion = new Item("potion", "A medicine to heal wounds.\n", house, HEALTH);
 	potion->heal_power = 20;
 	Item* key = new Item("key", "Old iron key.\n", house, COMMON);
@@ -51,12 +53,14 @@ World::World()
 	Item* sword = new Item("sword", "A simple old and rusty sword.\n", forest, WEAPON);
 	sword->attack_power = 5;
 
-	Item* shield = new Item("shield", "An old and rusty shield.\n", forest, ARMOUR);
+	Item* shield = new Item("shield", "An old and rusty shield.\n", basement, ARMOUR, chest);
 	shield->defense_power = 3;
 
-	entities.push_back(mailbox);
+	entities.push_back(chest);
 	entities.push_back(key);
+	entities.push_back(potion);
 	entities.push_back(sword);
+	entities.push_back(shield);
 
 	// Player ----
 	player = new Player("Hero", "You are an awesome adventurer!\n", forest, 30);
@@ -120,7 +124,7 @@ bool World::CheckInstruction(vector<string> instr) {
 			return true;
 		}
 		else if (action == "open") {
-			// parameter -> open
+			player->Open(parameter);
 			return true;
 		}
 		else if (action == "equip") {

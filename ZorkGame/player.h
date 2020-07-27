@@ -18,16 +18,17 @@ class Player : public Creature
 		Player(const char* name, const char* description, Room* room, int maxHP);
 		~Player();
 
-		void Look(string entity) const;
+		bool Look(string entity) const;
 		void Inventory() const;
 		Item* HaveItem(string item);
 		Room* Go(string direction);
-		void Take(string item);
+		bool Take(string item);
 		void Drop(string item);
 		void Equip(string item);
 		void Unequip(string item);
 		bool Use(string item);
 		bool Talk(string creature);
+		bool Open(string item);
 		bool Attack(string enemy);
 		void TurnAttack(Creature* attacker, Creature* defender);
 	public:

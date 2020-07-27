@@ -18,22 +18,28 @@ Player::~Player()
 }
 
 // ----------------------------------------------------
-void Player::Look(string name) const 
+bool Player::Look(string name) const 
 {
 	list<Entity*> roomElements = actualRoom->elements;
-	bool find = false;
 	for (list<Entity*>::const_iterator it = roomElements.begin(); it != roomElements.cend(); ++it)
 	{
 		if ((*it)->name == name) {
 			if ((*it)->type == CREATURE || (*it)->type == ITEM || (*it)->type == NPC) {
-				find = true;
+				if ((*it)->type == ITEM) {
+					Item* item = (Item*)*it;
+					if (!item->ContainerIsOpened()) {
+						cout << "You can't look that.\n";
+						return false;
+					}
+
+				}
 				(*it)->Look();
+				return true;
 			}
 		}
 	}
-	if (!find) {
-		cout << "You can't look that.\n";
-	}
+	cout << "You can't look that.\n";
+	return false;
 
 }
 // ----------------------------------------------------
@@ -103,22 +109,27 @@ Room* Player::Go(string direction) {
 	return NULL;
 }
 // ----------------------------------------------------
-void Player::Take(string name) {
+bool Player::Take(string name) {
 	list<Entity*> roomElements = actualRoom->elements;
-	bool find = false;
 	for (list<Entity*>::const_iterator it = roomElements.begin(); it != roomElements.cend(); ++it)
 	{
-		if ((*it)->name == name) {
-			find = true;
-			items.push_back((*it));
+		Item* item = (Item*)*it;
+		if (item->name == name && item->ContainerIsOpened()) {
+			if (!item->canTake) {
+				cout << "You can't take this item with you.\n";
+				return false;
+			}
+			items.push_back(item);
 			cout << "You take the " << name << ".\n";
 			actualRoom->elements.remove(*it);
-			break;
+			if (item->container != NULL) {
+				item->container->child = NULL;
+			}
+			return true;
 		}
 	}
-	if (!find) {
-		cout << "This object isn't in this room.\n";
-	}
+	cout << "This object isn't in this room.\n";
+	return false;
 }
 // ----------------------------------------------------
 void Player::Drop(string name) {
@@ -212,6 +223,22 @@ bool Player::Use(string name) {
 	items.remove(item);
 	cout << "You unlocked the door in the path with the " << item->name << ".\n";
 	return true;
+}
+// ----------------------------------------------------
+bool Player::Open(string name) {
+	list<Entity*> roomElements = actualRoom->elements;
+	for (list<Entity*>::const_iterator it = roomElements.begin(); it != roomElements.cend(); ++it)
+	{
+		Item* item = (Item*)*it;
+		if (item->name == name && !item->opened && !item->canTake) {
+			cout << "You open the " << name << ".\n";
+			cout << "There is a " << item->child->name << " inside.\n";
+			item->opened = true;
+			return true;
+		}
+	}
+	cout << "You can't open this object.\n";
+	return false;
 }
 // ----------------------------------------------------
 bool Player::Talk(string name) {
