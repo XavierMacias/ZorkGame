@@ -27,7 +27,7 @@ class Room : public Entity
 		Creature* GetCreature(string name);
 
 	public:
-		list<Entity*> elements;
+		list<Entity*> elements; // all the elements of the room
 };
 #endif
 

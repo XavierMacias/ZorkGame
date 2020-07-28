@@ -39,7 +39,7 @@ void Creature::Look() const {
 // ----------------------------------------------------
 void Creature::Talk() const {
 	if (!IsDead()) {
-		cout << text;
+		cout << text; // the dialogue of this creature/NPC
 	}
 	else {
 		cout << "You can't talk with it because it's dead!\n";
@@ -49,12 +49,12 @@ void Creature::Talk() const {
 // ----------------------------------------------------
 void Creature::SetWeapon(Item* w) {
 	weapon = w;
-	attack += w->attack_power;
+	attack += w->attack_power; // give a weapon to this creature
 	w->appear = false;
 }
 // ----------------------------------------------------
 void Creature::SetArmour(Item* a) {
 	armour = a;
-	defense += a->defense_power;
+	defense += a->defense_power; // give an armour to this creature
 	a->appear = false;
 }

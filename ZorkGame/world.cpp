@@ -23,6 +23,7 @@ World::World()
 	Room* mountain = new Room("Mountain", "An enormous and steep mountain.\n");
 	Room* mine = new Room("Mine", "An old and abandoned mine. It seems to be the end.\n");
 
+	// Exits ----
 	Exit* ex1 = new Exit("north", "south", "little path", field, hill);
 	Exit* ex2 = new Exit("east", "west", "leafy road", field, forest);
 	Exit* ex3 = new Exit("south", "north", "way down", forest, valley);
@@ -137,15 +138,14 @@ list<Entity*> World::GetEntitites() {
 }
 // ----------------------------------------------------
 void World::LookInitialMap() {
-	player->room->Look();
+	player->room->Look(); // description of the initial map
 }
 // ----------------------------------------------------
 bool World::CheckInstruction(vector<string> instr) {
-	//cout << instr << endl;
 	string action = instr.at(0);
 	if (instr.size() == 1) { // commands without arguments
 		if (action == "help") {
-			cout << "The possible commands are: help, inventory, go <direction>, look <something>, take <item>, drop <item>, attack <enemy>, open <item>, equip <weapon/armor>, unequip <weapon/armor>, loot <enemy>, use <item>, use <item> <direction>, exit\n";
+			cout << "The possible commands are: help, inventory, go <direction>, look <something>, take <item>, drop <item>, attack <enemy>, open <item>, equip <weapon/armor>, unequip <weapon/armor>, loot <enemy>, use <item>, use <item> <direction/item>, exit\n";
 			return true;
 		}
 		else if (action == "inventory") {

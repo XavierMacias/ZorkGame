@@ -22,12 +22,13 @@ void Room::Look() const
 	cout << "\n" << name << "\n";
 	cout << description;
 
+	// List exits --
 	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
-		if ((*it)->type == EXIT) 
+		if ((*it)->type == EXIT)
 		{
 			Exit* ex = (Exit*)*it;
-			if (ex->destination->name == name) {
+			if (ex->destination->name == name) { // depending of the point of view the direction changes
 				ex->Look(1);
 			}
 			else if (ex->origin->name == name) {
@@ -41,8 +42,8 @@ void Room::Look() const
 	{
 		if ((*it)->type == ITEM)
 		{
-			Item* item = (Item*)*it;
-			if (item->ContainerIsOpened() && item->container == NULL && item->appear) {
+			Item* item = (Item*)*it; // items inside chests or other creatures doesn't show in the map initially
+			if (item->ContainerIsOpened() && item->container == NULL && item->appear) { 
 				cout << "\nThere is an item here: " << item->name;
 			}
 			
@@ -68,11 +69,11 @@ void Room::Look() const
 }
 
 // ----------------------------------------------------
-Exit* Room::GetExit(string direction)
+Exit* Room::GetExit(string direction) // obtain the exit of the room in this direction
 {
 	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
-		if ((*it)->type == EXIT)
+		if ((*it)->type == EXIT) 
 		{
 			Exit* ex = (Exit*)*it;
 			if (ex->destination->name == name && ex->lead == direction) {
@@ -87,7 +88,7 @@ Exit* Room::GetExit(string direction)
 	return NULL;
 }
 // ----------------------------------------------------
-Exit* Room::GetLockedExit(string direction)
+Exit* Room::GetLockedExit(string direction) // obtain the LOCKED exit of this room in this direction
 {
 	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
@@ -103,7 +104,7 @@ Exit* Room::GetLockedExit(string direction)
 	return NULL;
 }
 // ----------------------------------------------------
-Item* Room::GetLockedItem(string name)
+Item* Room::GetLockedItem(string name) // obtain the LOCKED item of this room with this name
 {
 	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
@@ -119,7 +120,7 @@ Item* Room::GetLockedItem(string name)
 	return NULL;
 }
 // ----------------------------------------------------
-Creature* Room::GetCreature(string name) {
+Creature* Room::GetCreature(string name) { // obtain the creature or NPC of this room with this name
 
 	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{

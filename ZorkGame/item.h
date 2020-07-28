@@ -9,7 +9,7 @@ using namespace std;
 
 class Room;
 
-enum ItemType
+enum ItemType // type of items
 {
 	COMMON,
 	HEALTH,

@@ -20,10 +20,10 @@ Player::~Player()
 // ----------------------------------------------------
 bool Player::Look(string name) const 
 {
-	list<Entity*> roomElements = actualRoom->elements;
+	list<Entity*> roomElements = actualRoom->elements; 
 	for (list<Entity*>::const_iterator it = roomElements.begin(); it != roomElements.cend(); ++it)
 	{
-		if ((*it)->name == name) {
+		if ((*it)->name == name) { // you only can look creatures, items and NPCs.
 			if ((*it)->type == CREATURE || (*it)->type == ITEM || (*it)->type == NPC) {
 				if ((*it)->type == ITEM) {
 					Item* item = (Item*)*it;
@@ -51,11 +51,11 @@ void Player::Inventory() const {
 	else {
 		for (list<Entity*>::const_iterator it = items.begin(); it != items.cend(); ++it)
 		{
-			cout << (*it)->name << "\n";
+			cout << (*it)->name << "\n"; // show the items the player has
 		}
 	}
 
-	cout << "EQUIPMENT: \n";
+	cout << "EQUIPMENT: \n"; // player's equipment
 	if (weapon == NULL) {
 		cout << "You don't have any equiped weapon.\n";
 	}
@@ -70,14 +70,14 @@ void Player::Inventory() const {
 		cout << "Armour: " << armour->name << "\n";
 	}
 
-	cout << "STATS: \n";
+	cout << "STATS: \n"; // player's stats
 	cout << "Health Points: " << hp << "/" << maxHP << "\n";
 	cout << "Attack: " << attack << "\n";
 	cout << "Defense: " << defense << "\n";
 
 }
 // ----------------------------------------------------
-Item* Player::HaveItem(string item) {
+Item* Player::HaveItem(string item) { // check if the player has an item in its inventory
 	for (list<Entity*>::const_iterator it = items.begin(); it != items.cend(); ++it)
 	{
 		if ((*it)->name == item) {
@@ -90,11 +90,11 @@ Item* Player::HaveItem(string item) {
 Room* Player::Go(string direction) {
 	Exit* ex = actualRoom->GetExit(direction);
 	if (ex == NULL) {
-		cout << "You can't go in this direction.\n";
+		cout << "You can't go in this direction.\n"; // you can go in this direction?
 	}
 	else {
 		if (ex->locked) {
-			cout << "This path is blocked by a big iron door.\n";
+			cout << "This path is blocked by a big iron door.\n"; // the exit is locked?
 			return NULL;
 		}
 		if (ex->origin->name == actualRoom->name) {	
@@ -103,14 +103,14 @@ Room* Player::Go(string direction) {
 		else if(ex->destination->name == actualRoom->name) {
 			actualRoom = ex->origin;
 		}
-		cout << "You go in direction " << direction << ".\n";
+		cout << "You go in direction " << direction << ".\n"; // go to this direction and change actual room
 		return actualRoom;
 	}
 	return NULL;
 }
 // ----------------------------------------------------
 bool Player::Take(string name) {
-	list<Entity*> roomElements = actualRoom->elements;
+	list<Entity*> roomElements = actualRoom->elements; // take the item if it's in the actual room
 	for (list<Entity*>::const_iterator it = roomElements.begin(); it != roomElements.cend(); ++it)
 	{
 		if ((*it)->type == ITEM) {
@@ -136,7 +136,7 @@ bool Player::Take(string name) {
 }
 // ----------------------------------------------------
 void Player::Drop(string name) {
-	if (HaveItem(name) != NULL) {
+	if (HaveItem(name) != NULL) { // drop the item in the room if the player has it
 		Item* item = HaveItem(name);
 		items.remove(item);
 		actualRoom->elements.push_back(item);
@@ -148,7 +148,7 @@ void Player::Drop(string name) {
 }
 // ----------------------------------------------------
 bool Player::Equip(string name) {
-	if (HaveItem(name) != NULL) {
+	if (HaveItem(name) != NULL) { // equip the item if the player hasn't equip something already
 		Item* item = HaveItem(name);
 		if (item->item_type == ARMOUR) {
 			if (armour != NULL) {
@@ -182,7 +182,7 @@ bool Player::Equip(string name) {
 }
 // ----------------------------------------------------
 bool Player::Unequip(string name) {
-	if (weapon != NULL) {
+	if (weapon != NULL) { // unequip the item if the player has something equiped
 		if (weapon->name == name) {
 			Item* item = weapon;
 			weapon = NULL;
@@ -214,12 +214,12 @@ bool Player::Use(string name) {
 		return false;
 	}
 	Item* item = HaveItem(name);
-	if (item->item_type == HEALTH && item->name == name) {
+	if (item->item_type == HEALTH && item->name == name) { // use health item, like a potion
 		if (hp == maxHP) {
 			cout << "Your health is maximal!\n";
 			return false;
 		}
-		hp += item->heal_power;
+		hp += item->heal_power; // recover HP
 		if (hp > maxHP) {
 			hp = maxHP;
 		}
@@ -227,9 +227,9 @@ bool Player::Use(string name) {
 		items.remove(item);
 		return true;
 	}
-	if (item->item_type == STAR && item->name == name) {
-		cout << "You use the power of the sacred star!\nYOU WIN THE GAME! CONGRATULATIONS!\n";
-		exit(0);
+	if (item->item_type == STAR && item->name == name) { // use sacred star
+		cout << "You use the power of the sacred star!\nYOU WIN THE GAME! CONGRATULATIONS!\n"; // you win the game
+		exit(0); // exit game
 	}
 	cout << "You can't use this here.\n";
 	return false;
@@ -240,7 +240,7 @@ bool Player::Open(string name) {
 	list<Entity*> roomElements = actualRoom->elements;
 	for (list<Entity*>::const_iterator it = roomElements.begin(); it != roomElements.cend(); ++it)
 	{
-		if ((*it)->type == ITEM) {
+		if ((*it)->type == ITEM) { // open item is it can be opened
 			Item* item = (Item*)*it;
 			if (item->name == name && !item->opened && !item->canTake) {
 				if (item->locked) {
@@ -248,7 +248,7 @@ bool Player::Open(string name) {
 					return false;
 				}
 				cout << "You open the " << name << ".\n";
-				cout << "There is a " << item->child->name << " inside.\n";
+				cout << "There is a " << item->child->name << " inside.\n"; // item inside
 				item->opened = true;
 				return true;
 			}
@@ -265,10 +265,10 @@ bool Player::Unlock(string name, string direction) {
 		return false;
 	}
 	Item* item = HaveItem(name);
-	Exit* lockedExit = actualRoom->GetLockedExit(direction);
-	Item* lockedItem = actualRoom->GetLockedItem(direction);
-	if (lockedExit != NULL) {
-		if (item != lockedExit->key) {
+	Exit* lockedExit = actualRoom->GetLockedExit(direction); // lockedExits?
+	Item* lockedItem = actualRoom->GetLockedItem(direction); // lockedItems?
+	if (lockedExit != NULL) { // unlock exit
+		if (item != lockedExit->key) { // check if is the correct key
 			cout << "This item doesn't work here.\n";
 			return false;
 		}
@@ -278,8 +278,8 @@ bool Player::Unlock(string name, string direction) {
 		return true;
 		
 	}
-	if (lockedItem != NULL) {
-		if (item != lockedItem->key) {
+	if (lockedItem != NULL) { // unlock item (like chest)
+		if (item != lockedItem->key) { // check if is the correct key
 			cout << "This item doesn't work here.\n";
 			return false;
 		}
@@ -319,17 +319,17 @@ bool Player::Loot(string name) {
 		return false;
 	}
 
-	if (cr->weapon != NULL) {
+	if (cr->weapon != NULL) { // loot weapon
 		items.push_back(cr->weapon);
 		cout << "You obtain a " << cr->weapon->name << ".\n";
 		cr->weapon = NULL;
 	}
-	if (cr->armour != NULL) {
+	if (cr->armour != NULL) { // loot armour
 		items.push_back(cr->armour);
 		cout << "You obtain a " << cr->armour->name << ".\n";
 		cr->armour = NULL;
 	}
-	if (cr->inventory != NULL) {
+	if (cr->inventory != NULL) { // loot object
 		items.push_back(cr->inventory);
 		cout << "You obtain a " << cr->inventory->name << ".\n";
 		cr->inventory = NULL;
@@ -351,17 +351,17 @@ bool Player::Attack(string name) {
 		cout << cr->name << " is already dead!\n";
 		return false;
 	}
-	TurnAttack(this, cr);
+	TurnAttack(this, cr); // attack enemy
 	if (cr->IsDead()) {
-		cout << "You defeat " << cr->name << "!\n";
-		if (cr->weapon != NULL || cr->armour != NULL || cr->inventory != NULL) {
+		cout << "You defeat " << cr->name << "!\n"; // kill enemy
+		if (cr->weapon != NULL || cr->armour != NULL || cr->inventory != NULL) { // check if enemy has loot
 			cout << cr->name << " dropped something when it died!\n";
 		}
 		return true;
 	}
-	TurnAttack(cr, this);
+	TurnAttack(cr, this); // enemy attack you
 	if (IsDead()) {
-		cout << "You dead! GAME OVER!\n";
+		cout << "You dead! GAME OVER!\n"; // enemy kills you
 		exit(0);
 	}
 

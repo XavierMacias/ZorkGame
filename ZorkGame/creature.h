@@ -26,7 +26,7 @@ class Creature : public Entity
 		void SetArmour(Item* armour);
 
 	public:
-		int hp;
+		int hp; // actual health points
 		int maxHP;
 		int attack;
 		int defense;

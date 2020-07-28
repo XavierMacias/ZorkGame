@@ -34,8 +34,8 @@ class Player : public Creature
 		bool Attack(string enemy);
 		void TurnAttack(Creature* attacker, Creature* defender);
 	public:
-		list<Entity*> items;
-		Room* actualRoom;
+		list<Entity*> items; // the items that actually have the player
+		Room* actualRoom; // the room when actually is the player
 };
 
 #endif //__Player__

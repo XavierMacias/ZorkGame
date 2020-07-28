@@ -35,19 +35,19 @@ int main()
 {
     string instruction;
 
-    World* world = new World();
+    World* world = new World(); // create the world
 
     cout << "Welcome to Zork! This is a fantastic adventure. Use the command 'help' if you don't know how to play.\n";
     cout << "Use the command 'exit' to exit the game.\n";
     cout << "-----------------------------------------------\n";
     world->LookInitialMap();
 
-    while (1) {
+    while (1) { // game loop
         getline(cin, instruction);
-        if (instruction == "exit") {
+        if (instruction == "exit") { // to exit the game
             break;
         }
-        vector<string> words = splitString(instruction);
+        vector<string> words = splitString(instruction); // split the command in the spaces
         if (!world->CheckInstruction(words)) {
             cout << "I don't understand you\n";
         }
