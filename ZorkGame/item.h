@@ -14,13 +14,14 @@ enum ItemType
 	COMMON,
 	HEALTH,
 	WEAPON,
-	ARMOUR
+	ARMOUR,
+	STAR
 };
 
 class Item : public Entity
 {
 public:
-	Item(const char* name, const char* description, Room* room, ItemType item_type, Item* container = NULL);
+	Item(const char* name, const char* description, Room* room, ItemType item_type, Entity* container = NULL);
 	~Item();
 
 	void Look() const;
@@ -28,13 +29,15 @@ public:
 
 public:
 	ItemType item_type;
-	Item* container;
-	Item* child;
 	int attack_power;
 	int defense_power;
 	int heal_power;
 	bool opened;
 	bool canTake;
+	bool locked;
+	bool appear;
+	Entity* container;
+	Entity* key;
 };
 #endif
 

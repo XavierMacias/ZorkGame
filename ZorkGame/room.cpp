@@ -24,7 +24,6 @@ void Room::Look() const
 
 	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
-		//if ((*it)->type == EXIT && (*it)->room->name == name)
 		if ((*it)->type == EXIT) 
 		{
 			Exit* ex = (Exit*)*it;
@@ -34,18 +33,16 @@ void Room::Look() const
 			else if (ex->origin->name == name) {
 				ex->Look(0);
 			}
-			
-			//cout << "\nDirection (" << ex->GetNameFrom(this) << ") you see " << ex->GetDestinationFrom(this)->name;
 		}
 	}
 
 	// List items --
 	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
-		if ((*it)->type == ITEM)// && (*it)->room->name == name)
+		if ((*it)->type == ITEM)
 		{
 			Item* item = (Item*)*it;
-			if (item->ContainerIsOpened()) {
+			if (item->ContainerIsOpened() && item->container == NULL && item->appear) {
 				cout << "\nThere is an item here: " << item->name;
 			}
 			
@@ -55,7 +52,7 @@ void Room::Look() const
 	// List creatures --
 	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
 	{
-		if ((*it)->type == CREATURE || (*it)->type == NPC) //&& (*it)->room->name == name)
+		if ((*it)->type == CREATURE || (*it)->type == NPC) 
 		{
 			Creature* cr = (Creature*)*it;
 			if (cr->IsDead()) {
@@ -64,9 +61,6 @@ void Room::Look() const
 			else {
 				cout << "\nThere is someone else here: " << cr->name;
 			}
-			
-			//if (cr->IsAlive() == false)
-			//	cout << " (dead)";
 		}
 	}
 
@@ -102,6 +96,22 @@ Exit* Room::GetLockedExit(string direction)
 			Exit* ex = (Exit*)*it;
 			if (ex->locked && ((ex->direction == direction && this == ex->origin) || (ex->lead == direction && this == ex->destination))) {
 				return ex;
+			}
+		}
+	}
+
+	return NULL;
+}
+// ----------------------------------------------------
+Item* Room::GetLockedItem(string name)
+{
+	for (list<Entity*>::const_iterator it = elements.begin(); it != elements.cend(); ++it)
+	{
+		if ((*it)->type == ITEM)
+		{
+			Item* item = (Item*)*it;
+			if (item->locked && item->name == name) {
+				return item;
 			}
 		}
 	}

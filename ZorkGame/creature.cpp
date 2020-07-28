@@ -10,8 +10,6 @@ Creature::Creature(const char* name, const char* description, Room* room, int ma
 	weapon = NULL;
 	armour = NULL;
 	room->elements.push_back(this);
-	//if (one_way == false)
-	//	destination->container.push_back(this);
 }
 
 // ----------------------------------------------------
@@ -47,4 +45,16 @@ void Creature::Talk() const {
 		cout << "You can't talk with it because it's dead!\n";
 	}
 	
+}
+// ----------------------------------------------------
+void Creature::SetWeapon(Item* w) {
+	weapon = w;
+	attack += w->attack_power;
+	w->appear = false;
+}
+// ----------------------------------------------------
+void Creature::SetArmour(Item* a) {
+	armour = a;
+	defense += a->defense_power;
+	a->appear = false;
 }

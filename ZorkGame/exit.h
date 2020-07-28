@@ -18,9 +18,6 @@ class Exit : public Entity
 
 		void Look(int isOrigin) const;
 
-		//const string& GetNameFrom(const Room* room) const;
-		//Room* GetDestinationFrom(const Room* room) const;
-
 	public:
 		const char* direction;
 		bool locked;

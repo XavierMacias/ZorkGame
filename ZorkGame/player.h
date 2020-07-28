@@ -24,12 +24,13 @@ class Player : public Creature
 		Room* Go(string direction);
 		bool Take(string item);
 		void Drop(string item);
-		void Equip(string item);
-		void Unequip(string item);
+		bool Equip(string item);
+		bool Unequip(string item);
 		bool Use(string item);
 		bool Talk(string creature);
 		bool Open(string item);
 		bool Unlock(string item, string direction);
+		bool Loot(string enemy);
 		bool Attack(string enemy);
 		void TurnAttack(Creature* attacker, Creature* defender);
 	public:

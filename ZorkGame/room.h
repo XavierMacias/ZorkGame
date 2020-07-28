@@ -23,6 +23,7 @@ class Room : public Entity
 		void Look() const;
 		Exit* GetExit(string direction);
 		Exit* GetLockedExit(string direction);
+		Item* GetLockedItem(string item);
 		Creature* GetCreature(string name);
 
 	public:

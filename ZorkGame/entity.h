@@ -33,6 +33,7 @@ public:
 	string description;
 
 	Entity* room;
+	Entity* child;
 };
 
 #endif 

@@ -22,6 +22,8 @@ class Creature : public Entity
 		bool IsDead() const;
 		virtual void Look() const;
 		void Talk() const;
+		void SetWeapon(Item* weapon);
+		void SetArmour(Item* armour);
 
 	public:
 		int hp;
@@ -30,6 +32,7 @@ class Creature : public Entity
 		int defense;
 		Item* weapon;
 		Item* armour;
+		Item* inventory;
 		string text;
 };
 
